@@ -24,7 +24,7 @@ chrome_options.add_argument('--kiosk-printing')
 driver = webdriver.Chrome(ChromeDriverManager().install(),
                           options=chrome_options)
 
-qtd_max = 2
+qtd_max = 50
 qtd = 0
 
 driver.maximize_window()  

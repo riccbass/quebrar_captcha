@@ -5,4 +5,5 @@
 *.xlsx
 *.pyc
 **/teste_validacao
+**/modelo
 *.json

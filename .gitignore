@@ -1,0 +1,8 @@
+*.jpg
+*.png
+*.xml
+*.pb
+*.xlsx
+*.pyc
+**/teste_validacao
+*.json

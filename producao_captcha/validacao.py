@@ -7,7 +7,7 @@ Created on Tue May 17 12:18:31 2022
 
 import sys
 
-sys.path.insert(0, r'C:\qq\06_automacao\producao_captcha')
+sys.path.insert(0, r'C:\qq\06_automacao\captcha\producao_captcha')
 
 from ler_captcha_imagem import ler_captcha
 
@@ -18,19 +18,21 @@ from datetime import datetime
 
 from os import remove
 
+from os.path import join, basename
+
 import pandas as pd
 import xml.etree.ElementTree as ET
 
 from glob import glob
 
-with open(r'C:\qq\06_automacao\producao_captcha\modelo\lb.dat', 'rb') as f:
+with open(r'C:\qq\06_automacao\captcha\producao_captcha\modelo\lb.dat', 'rb') as f:
     lb = pickle.load(f)
        
-modelo = load_model(r'C:\qq\06_automacao\producao_captcha\modelo\modelo_completo.dat')
+modelo = load_model(r'C:\qq\06_automacao\captcha\producao_captcha\modelo\modelo_completo.dat')
 
 lst_anal = []
 imagens = []
-xmls = glob(r'C:\qq\06_automacao\extracao\resumo\*.xml')
+xmls = glob(r'C:\qq\06_automacao\captcha\extracao\resumo\*.xml')
 
 for xml in xmls:
     
@@ -78,27 +80,31 @@ for xml in xmls:
     
     texto = [i['caracter'] for i in letras]
     texto = ''.join(texto)
+    
+    filename_aj = join(r'C:\qq\06_automacao\captcha\extracao\imagens' ,basename(filename))
         
-    texto_captcha = ler_captcha(filename, modelo, lb)   
+    texto_captcha = ler_captcha(filename_aj, modelo, lb)   
     
     imagens.append(filename)
+    
+    teste_total = texto == texto_captcha
 
     lst_anal.append({'texto':texto,
                      'texto_captcha':texto_captcha,
-                     'filename':filename})    
+                     'filename':filename,
+                     'teste_total':teste_total})    
 
 df_agg = pd.DataFrame(lst_anal)
 
-df_agg['teste'] = df_agg['texto'] == df_agg['texto_captcha']
-
-print(df_agg['teste'].value_counts() / len(df_agg))
+print(df_agg['teste_total'].value_counts() / len(df_agg))
 
 anomesdia = datetime.now().strftime('%Y%m%d')
 
-df_agg.to_excel(fr'C:\qq\06_automacao\producao_captcha\teste_validacao\teste_validacao_{anomesdia}.xlsx',
+df_agg.to_excel(fr'C:\qq\06_automacao\captcha\producao_captcha\teste_validacao\teste_validacao_{anomesdia}.xlsx',
                 index = False,
                 sheet_name = 'VALIDACAO')
 
+'''
 imagens_tot = glob(r'C:\qq\06_automacao\extracao\imagens\*.png')
 
 for imagem in imagens_tot:
@@ -106,3 +112,4 @@ for imagem in imagens_tot:
     if imagem not in imagens:
         print('n existe')
         remove(imagem)
+'''

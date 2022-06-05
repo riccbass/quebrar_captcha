@@ -85,7 +85,7 @@ Y_test = lb.transform(Y_test)
     
 #salvar o label binalzier
 
-with open(r'C:\qq\06_automacao\producao_captcha\modelo\lb.dat', 'wb') as ap:
+with open(r'C:\qq\06_automacao\captcha\producao_captcha\modelo\lb.dat', 'wb') as ap:
     pickle.dump(lb, ap)
     
 modelo = Sequential()
@@ -115,5 +115,5 @@ modelo.fit(X_train,
            batch_size = len(set(rotulos)),
            epochs=20, verbose=1)
 
-modelo.save(r'C:\qq\06_automacao\producao_captcha\modelo\modelo_completo.dat')
+modelo.save(r'C:\qq\06_automacao\captcha\producao_captcha\modelo\modelo_completo.dat')
    
